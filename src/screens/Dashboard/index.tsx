@@ -2,12 +2,39 @@
 import React from 'react';
 
 import { Text } from 'react-native';
-import { Container } from './styles';
+import { Container, Header ,
+    UserInfo,
+    UserPhoto,
+    User,
+    UserGreeting,
+    UserName,
+    UserWrapper,
+    IconPower,
+ } from './styles';
 
 export function Dashboard(){
     return(
         <Container>
-            <Text>Dashboard</Text>
+            <Header>
+            <UserWrapper>
+
+           
+            <UserInfo>
+            <UserPhoto source={{uri : 'https://avatars.githubusercontent.com/u/43159625?v=4'}}/>
+
+                <User>
+                    <UserGreeting>
+                        Olá,
+                    </UserGreeting>
+                    <UserName>
+                        Ton
+                    </UserName>
+                </User>
+            </UserInfo>
+            <IconPower name="power" />
+            </UserWrapper>
+            </Header>
+            
         </Container>
     )
 }
