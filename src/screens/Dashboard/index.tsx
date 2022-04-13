@@ -14,11 +14,12 @@ import {
   UserGreeting,
   UserName,
   UserWrapper,
-  IconPower,
+  Icon,
   HighlightCards,
   Transactions,
   Title,
   TransactionList,
+  LogoutButtom,
 } from "./styles";
 
 export interface DataProps extends TransactionsCardProps {
@@ -77,7 +78,9 @@ export function Dashboard() {
               <UserName>Ton</UserName>
             </User>
           </UserInfo>
-          <IconPower name="power" />
+          <LogoutButtom>
+            <Icon name="power" />
+          </LogoutButtom>
         </UserWrapper>
       </Header>
 
