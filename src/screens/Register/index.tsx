@@ -15,6 +15,13 @@ import {
 } from "./styles";
 
 import { CategorySelect } from "../CategorySelect";
+import { InputForm } from "../../components/Form/InputForm";
+import { useForm } from "react-hook-form";
+
+interface FormData {
+  name: string;
+  amount: number;
+}
 
 export function Register() {
   const [transactionType, setTransactionType] = useState("");
@@ -23,6 +30,8 @@ export function Register() {
     key: "category",
     name: "Categoria",
   });
+
+  const { control, handleSubmit } = useForm();
 
   function handleTransactionTypeSelectet(type: "up" | "down") {
     setTransactionType(type);
@@ -35,6 +44,16 @@ export function Register() {
   function handleModalCategoryClose() {
     setCategoryModalOpen(false);
   }
+
+  function handleRegister(form: FormData) {
+    const data = {
+      name: form.name,
+      amount: form.amount,
+      transactionType,
+      category: category.key,
+    };
+  }
+
   return (
     <Container>
       <Header>
@@ -42,8 +61,19 @@ export function Register() {
       </Header>
       <Form>
         <Fields>
-          <Input placeholder="Nome" />
-          <Input placeholder="Valor" />
+          <InputForm
+            name="name"
+            control={control}
+            placeholder="Nome"
+            autoCapitalize="sentences"
+            autoCorrect={false}
+          />
+          <InputForm
+            name="amount"
+            control={control}
+            placeholder="Valor"
+            keyboardType="numeric"
+          />
           <TransactionsType>
             <TransactiontypeButton
               title="Income"
@@ -64,7 +94,7 @@ export function Register() {
           />
         </Fields>
 
-        <Button title="Enviar" />
+        <Button title="Enviar" onPress={() => handleSubmit(handleRegister)} />
       </Form>
 
       <Modal visible={categoryModalOpen}>

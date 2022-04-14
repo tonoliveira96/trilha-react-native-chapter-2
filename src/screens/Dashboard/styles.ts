@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { FlatList} from 'react-native';
+import { FlatList } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Feather } from "@expo/vector-icons";
 import { DataProps } from ".";
@@ -12,7 +12,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
   width: 100%;
-  height: ${RFPercentage(42)}px;
+  height: ${RFPercentage(36)}px;
   background-color: ${({ theme }) => theme.colors.primary};
 
   justify-content: center;
@@ -56,7 +56,7 @@ export const UserName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.bold};
 `;
 
-export const LogoutButtom = styled(BorderlessButton)``
+export const LogoutButtom = styled(BorderlessButton)``;
 
 export const Icon = styled(Feather)`
   color: ${({ theme }) => theme.colors.secondary};
@@ -70,14 +70,14 @@ export const HighlightCards = styled.ScrollView.attrs({
 })`
   width: 100%;
   position: absolute;
-  margin-top: ${RFPercentage(20)}px;
+  margin-top: ${RFPercentage(18)}px;
 `;
 
 export const Transactions = styled.View`
   flex: 1;
   padding: 0 24px;
 
-  margin-top: ${RFPercentage(8)}px;
+  margin-top: ${RFPercentage(12)}px;
 `;
 
 export const Title = styled.Text`
@@ -87,6 +87,6 @@ export const Title = styled.Text`
   margin-bottom: 16px;
 `;
 
-export const TransactionList = styled(FlatList  as new ()=> FlatList<DataProps>) `
-
-`;
+export const TransactionList = styled(
+  FlatList as new () => FlatList<DataProps>
+)``;
