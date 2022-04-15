@@ -17,7 +17,7 @@ export function AppRoutes() {
         tabBarActiveTintColor: theme.colors.secondary,
         tabBarInactiveTintColor: theme.colors.text,
         tabBarStyle: {
-          paddingVertical: Platform.OS === "ios" ? 20 : 0
+          paddingVertical: Platform.OS === "ios" ? 20 : 0,
         },
       }}
     >
@@ -35,25 +35,25 @@ export function AppRoutes() {
         }}
       />
 
-      <Screen name="Cadastrar" component={Register}   options={{
+      <Screen
+        name="Cadastrar"
+        component={Register}
+        options={{
           tabBarIcon: ({ size, color }) => (
-            <MaterialIcons
-              name="attach-money"
-              size={size}
-              color={color}
-            />
+            <MaterialIcons name="attach-money" size={size} color={color} />
           ),
-        }}/>
+        }}
+      />
 
-      <Screen name="Resumo" component={Register}  options={{
+      <Screen
+        name="Resumo"
+        component={Register}
+        options={{
           tabBarIcon: ({ size, color }) => (
-            <MaterialIcons
-              name="pie-chart"
-              size={size}
-              color={color}
-            />
+            <MaterialIcons name="pie-chart" size={size} color={color} />
           ),
-        }} />
+        }}
+      />
     </Navigator>
   );
 }

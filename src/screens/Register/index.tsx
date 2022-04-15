@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Alert, Keyboard, Modal } from "react-native";
+import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
+
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Button } from "../../components/Form/Button";
 import { CategorySelectButton } from "../../components/Form/CategorySelectButton";
-import { Input } from "../../components/Form/Input";
+
 import { TransactiontypeButton } from "../../components/Form/TransactionTypeButton";
 import {
   Container,
@@ -17,9 +20,7 @@ import {
 import { CategorySelect } from "../CategorySelect";
 import { InputForm } from "../../components/Form/InputForm";
 import { useForm } from "react-hook-form";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface FormData {
   name: string;
@@ -41,6 +42,7 @@ export function Register() {
     key: "category",
     name: "Categoria",
   });
+  const dataKey = "@gofinance:transactions";
 
   const {
     control,
@@ -62,11 +64,11 @@ export function Register() {
     setCategoryModalOpen(false);
   }
 
-  function handleRegister(form: FormData) {
+  async function handleRegister(form: FormData) {
     if (!transactionType) {
       return Alert.alert("Selecione o tipo de trasação!");
     }
-    if (category.key === "categoria") {
+    if (category.key === "category") {
       return Alert.alert("Selecione a categoria!");
     }
 
@@ -76,6 +78,14 @@ export function Register() {
       transactionType,
       category: category.key,
     };
+    console.log(data);
+
+    try {
+      await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Não foi possivel salvar");
+    }
   }
 
   return (
@@ -121,7 +131,7 @@ export function Register() {
             />
           </Fields>
 
-          <Button title="Enviar" onPress={() => handleSubmit(handleRegister)} />
+          <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
 
         <Modal visible={categoryModalOpen}>
