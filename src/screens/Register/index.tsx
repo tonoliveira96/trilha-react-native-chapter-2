@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Button } from "../../components/Form/Button";
 import { CategorySelectButton } from "../../components/Form/CategorySelectButton";
-
+import uuid from "react-native-uuid";
 import { TransactiontypeButton } from "../../components/Form/TransactionTypeButton";
 import {
   Container,
@@ -21,6 +21,7 @@ import { CategorySelect } from "../CategorySelect";
 import { InputForm } from "../../components/Form/InputForm";
 import { useForm } from "react-hook-form";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 interface FormData {
   name: string;
@@ -42,11 +43,13 @@ export function Register() {
     key: "category",
     name: "Categoria",
   });
+  const navigation = useNavigation()
   const dataKey = "@gofinance:transactions";
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -72,16 +75,30 @@ export function Register() {
       return Alert.alert("Selecione a categoria!");
     }
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionType,
       category: category.key,
+      date: new Date(),
     };
-    console.log(data);
+
+    console.log(newTransaction);
 
     try {
-      await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+      const data = await AsyncStorage.getItem(dataKey);
+      const currentData = data ? JSON.parse(data) : [];
+      const dataFormatted = [...currentData, newTransaction];
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
+
+      reset()
+      setTransactionType("");
+      setCategory({
+        key: "category",
+        name: "Categoria",
+      });
+      navigation.navigate("Home");
     } catch (error) {
       console.log(error);
       Alert.alert("Não foi possivel salvar");
