@@ -55,7 +55,7 @@ export function Register() {
     resolver: yupResolver(schema),
   });
 
-  function handleTransactionTypeSelectet(type: "up" | "down") {
+  function handleTransactionTypeSelectet(type: "positive" | "negative") {
     setTransactionType(type);
   }
 
@@ -79,7 +79,7 @@ export function Register() {
       id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
+      type: transactionType,
       category: category.key,
       date: new Date(),
     };
@@ -98,7 +98,7 @@ export function Register() {
         key: "category",
         name: "Categoria",
       });
-      navigation.navigate("Home");
+      navigation.navigate("Listagem");
     } catch (error) {
       console.log(error);
       Alert.alert("Não foi possivel salvar");
@@ -132,14 +132,14 @@ export function Register() {
               <TransactiontypeButton
                 title="Income"
                 type="up"
-                onPress={() => handleTransactionTypeSelectet("up")}
-                isActive={transactionType === "up"}
+                onPress={() => handleTransactionTypeSelectet("positive")}
+                isActive={transactionType === "positive"}
               />
               <TransactiontypeButton
                 title="Outcome"
                 type="down"
-                onPress={() => handleTransactionTypeSelectet("down")}
-                isActive={transactionType === "down"}
+                onPress={() => handleTransactionTypeSelectet("negative")}
+                isActive={transactionType === "negative"}
               />
             </TransactionsType>
             <CategorySelectButton
