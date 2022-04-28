@@ -84,8 +84,6 @@ export function Register() {
       date: new Date(),
     };
 
-    console.log(newTransaction);
-
     try {
       const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];

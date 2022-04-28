@@ -73,7 +73,6 @@ export function Dashboard() {
     const dataKey = "@gofinance:transactions";
     const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
-    console.log(transactions);
 
     let entriesTotal = 0;
     let expensiveTotal = 0;
