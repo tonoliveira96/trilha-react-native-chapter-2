@@ -16,6 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppRoutes } from "./src/routes/app.routes";
 import { StatusBar } from "react-native";
 import { SignIn } from "./src/screens/Signin";
+import { AuthProvider } from "./src/hooks/auth";
 
 export default function App() {
   const [fontsLoadead] = useFonts({
@@ -36,7 +37,9 @@ export default function App() {
           translucent
         />
         {/* <AppRoutes /> */}
-        <SignIn />
+        <AuthProvider>
+          <SignIn />
+        </AuthProvider>
       </NavigationContainer>
     </ThemeProvider>
   );
