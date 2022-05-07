@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "intl";
 import "intl/locale-data/jsonp/pt-BR";
 import { ThemeProvider } from "styled-components";
@@ -16,7 +16,7 @@ import { Routes } from "./src/routes";
 import { AppRoutes } from "./src/routes/app.routes";
 import { StatusBar } from "react-native";
 import { SignIn } from "./src/screens/Signin";
-import { AuthProvider } from "./src/hooks/auth";
+import { AuthProvider, useAuth } from "./src/hooks/auth";
 
 export default function App() {
   const [fontsLoadead] = useFonts({
@@ -25,7 +25,9 @@ export default function App() {
     Poppins_700Bold,
   });
 
-  if (!fontsLoadead) {
+  const {userStogeLoading} = useAuth();
+
+  if (!fontsLoadead || userStogeLoading) {
     return <AppLoading />;
   }
   return (

@@ -25,6 +25,8 @@ interface IAuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>;
   signInWithApple(): Promise<void>;
+  signOut(): Promise<void>;
+  userStogeLoading: boolean;
 }
 
 interface AuthorizationResponse {
@@ -42,7 +44,8 @@ export const AuthContext = createContext({} as IAuthContextData);
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User);
   const userStorageKey = "@gofinances:user";
-  const [userSotageLoading, setUserStorageLoading] = useState(true);
+  const [userStogeLoading, setUserStorageLoading] = useState(true);
+  
   async function signInWithGoogle() {
     try {
       const RESPONSE_TYPE = "token";
@@ -67,10 +70,7 @@ function AuthProvider({ children }: AuthProviderProps) {
           photo: userInfo.picture,
         };
         setUser(userLogged);
-        await AsyncStorage.setItem(
-          "@gofinances:user",
-          JSON.stringify(userLogged)
-        );
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
       }
     } catch (error) {
       throw new Error(error);
@@ -87,28 +87,32 @@ function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if (credendial) {
+        const name = credendial.fullName!.givenName!
+        const photo = `https://ui-avatars.com/api/?name=${name}&length=1`
         const userLogged = {
           id: String(credendial.user),
           email: credendial.email!,
-          name: credendial.fullName!.givenName!,
-          photo: undefined,
+          name,
+          photo,
         };
 
         setUser(userLogged);
-        await AsyncStorage.setItem(
-          "@gofinances:user",
-          JSON.stringify(userLogged)
-        );
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
       }
     } catch (error) {
       throw new Error(error);
     }
   }
 
+  async function signOut() {
+    setUser({} as User);
+    await AsyncStorage.removeItem(userStorageKey);
+  }
+
   useEffect(() => {
     async function loadUserStorageDate() {
       const userStorage = await AsyncStorage.getItem(userStorageKey);
-      console.log(userStorage)
+      console.log(userStorage);
       if (userStorage) {
         const userLogged = JSON.parse(userStorage) as User;
         setUser(userLogged);
@@ -119,7 +123,9 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
+    <AuthContext.Provider
+      value={{ user, signInWithGoogle, signInWithApple, signOut, userStogeLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );
