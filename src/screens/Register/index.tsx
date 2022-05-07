@@ -22,6 +22,7 @@ import { InputForm } from "../../components/Form/InputForm";
 import { useForm } from "react-hook-form";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 
 interface FormData {
   name: string;
@@ -43,8 +44,10 @@ export function Register() {
     key: "category",
     name: "Categoria",
   });
-  const navigation = useNavigation()
-  const dataKey = "@gofinance:transactions";
+  const navigation = useNavigation();
+  const { user } = useAuth();
+
+  const dataKey = `@gofinance:transactions_user:${user.id}`;
 
   const {
     control,
@@ -90,7 +93,7 @@ export function Register() {
       const dataFormatted = [...currentData, newTransaction];
       await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
 
-      reset()
+      reset();
       setTransactionType("");
       setCategory({
         key: "category",

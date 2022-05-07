@@ -50,7 +50,7 @@ export function Dashboard() {
   );
 
   const theme = useTheme();
-  const {signOut, user} = useAuth();
+  const { signOut, user } = useAuth();
 
   function getLastTransactionDate(
     colletion: DataProps[],
@@ -72,7 +72,7 @@ export function Dashboard() {
   }
 
   async function loadTransactions() {
-    const dataKey = "@gofinance:transactions";
+    const dataKey = `@gofinance:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
 
@@ -119,7 +119,7 @@ export function Dashboard() {
       "negative"
     );
 
-    const totalInterval = `01 a ${lastTransactionExpensive}`
+    const totalInterval = `01 a ${lastTransactionExpensive}`;
 
     const total = entriesTotal - expensiveTotal;
 
